@@ -1,0 +1,36 @@
+[project]
+name = "mlops-with-databricks"
+version = "0.0.1"
+description = "MLOps with Databricks"
+readme = "README.md"
+requires-python = ">=3.11, <3.12"
+dependencies = [
+    "mlflow==2.17.0",
+    "cffi==1.17.1",
+    "cloudpickle==3.1.0",
+    "lightgbm===4.5.0",
+    "matplotlib==3.9.2",
+    "numpy==1.26.4",
+    "pandas==2.2.3",
+    "psutil==6.0.0",
+    "pyarrow==14.0.1",
+    "scikit-learn==1.5.2",
+    "scipy==1.14.1",
+    "databricks-feature-engineering==0.6",
+    "databricks-feature-lookup==1.2.0",
+    "databricks-sdk==0.32.0"
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "databricks-connect>=15.4.1, <16",
+    "ipykernel>=6.29.5, <7",
+    "pip>=24.2",
+    "isort>=5.12.0,<6",        # For sorting imports
+    "nbqa>=1.5.0,<2",          # For linting and formatting notebooks
+    "black>=23.9.1,<24",       # For code formatting
+    "mypy>=1.5.1,<2",          # For static type checking
+    "pylint>=3.0.0,<4",        # For linting Python code
+    "jupyterlab>=4.3.4"
+]

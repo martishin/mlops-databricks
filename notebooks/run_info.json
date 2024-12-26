@@ -1,0 +1,46 @@
+{
+    "info": {
+        "artifact_uri": "dbfs:/databricks/mlflow-tracking/3056181829817875/a9ef5c30649f42ce9c978aada91ccb38/artifacts",
+        "end_time": 1735152541963,
+        "experiment_id": "3056181829817875",
+        "lifecycle_stage": "active",
+        "run_id": "a9ef5c30649f42ce9c978aada91ccb38",
+        "run_name": "demo-run",
+        "run_uuid": "a9ef5c30649f42ce9c978aada91ccb38",
+        "start_time": 1735152541590,
+        "status": "FINISHED",
+        "user_id": ""
+    },
+    "data": {
+        "metrics": {
+            "metric1": 1.0,
+            "metric2": 2.0
+        },
+        "params": {
+            "type": "demo"
+        },
+        "tags": {
+            "branch": "02_03",
+            "git_sha": "51v63531711eaa139",
+            "mlflow.databricks.cluster.id": "1224-190210-qhzhxwzu",
+            "mlflow.databricks.cluster.info": "{\"cluster_name\":\"Alex Martishin's Cluster\",\"spark_version\":\"15.4.x-scala2.12\",\"node_type_id\":\"r5d.large\",\"driver_node_type_id\":\"r5d.large\",\"autotermination_minutes\":120,\"disk_spec\":{},\"num_workers\":0}",
+            "mlflow.databricks.cluster.libraries": "{\"installable\":[],\"redacted\":[]}",
+            "mlflow.databricks.notebook.commandID": "1735149911140_7866640652048141547_ef941a95c07045d8a5840431e7a03b9d",
+            "mlflow.databricks.notebookID": "2072790107059722",
+            "mlflow.databricks.notebookPath": "/Users/asmartishin@gmail.com/.ide/databricks-idea-246f6994/notebooks/02_03.mlflow_experiment",
+            "mlflow.databricks.notebookRevisionID": "1735152542036",
+            "mlflow.databricks.webappURL": "https://oregon.cloud.databricks.com",
+            "mlflow.databricks.workspaceID": "4023664384517091",
+            "mlflow.databricks.workspaceURL": "dbc-2793f612-97a3.cloud.databricks.com",
+            "mlflow.note.content": "demo run",
+            "mlflow.runColor": "#5387dd",
+            "mlflow.runName": "demo-run",
+            "mlflow.source.name": "/Users/asmartishin@gmail.com/.ide/databricks-idea-246f6994/notebooks/02_03.mlflow_experiment",
+            "mlflow.source.type": "NOTEBOOK",
+            "mlflow.user": "asmartishin@gmail.com"
+        }
+    },
+    "inputs": {
+        "dataset_inputs": []
+    }
+}

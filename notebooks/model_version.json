@@ -1,0 +1,18 @@
+{
+    "_name": "mlops_dev.hotel_cancellation.basic_model",
+    "_version": "2",
+    "_creation_time": 1735172111946,
+    "_last_updated_timestamp": 1735172113100,
+    "_description": "",
+    "_user_id": "asmartishin@gmail.com",
+    "_current_stage": null,
+    "_source": "dbfs:/databricks/mlflow-tracking/3056181829817875/a59cefc8a8f24b65a3d08d03643221f3/artifacts/lightgbm-pipeline-model",
+    "_run_id": "a59cefc8a8f24b65a3d08d03643221f3",
+    "_run_link": null,
+    "_status": "READY",
+    "_status_message": "",
+    "_tags": {
+        "git_sha": "51v63531711eaa139"
+    },
+    "_aliases": []
+}

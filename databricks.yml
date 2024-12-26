@@ -1,0 +1,144 @@
+bundle:
+  name: mlops-with-databricks
+
+
+variables:
+  root_path:
+    description: root_path for the target
+    default: /Shared/.bundle/${bundle.target}/${bundle.name}
+  git_sha:
+    description: git_sha
+    default: abcd
+  schedule_pause_status:
+    description: schedule pause status
+    default: UNPAUSED
+
+resources:
+  jobs:
+    hotel-cancellation:
+      name: hotel-cancellation
+      schedule:
+        quartz_cron_expression: "0 0 6 ? * MON"
+        timezone_id: "Europe/Amsterdam"
+        pause_status: ${var.schedule_pause_status}
+      tags:
+        project_name: "hotel-cancellation"
+      job_clusters:
+        - job_cluster_key: "hotel-cancellation-cluster"
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            data_security_mode: "SINGLE_USER"
+            node_type_id: "r5.xlarge"
+            driver_node_type_id: "r5.xlarge"
+            aws_attributes:
+              ebs_volume_count: 1                         # Number of EBS volumes
+              ebs_volume_size: 100                        # Size in GiB
+              ebs_volume_type: "GENERAL_PURPOSE_SSD"      # General Purpose SSD
+            autoscale:
+              min_workers: 1
+              max_workers: 1
+      tasks:
+        - task_key: "preprocessing"
+          job_cluster_key: "hotel-cancellation-cluster"
+          spark_python_task:
+            python_file: "fe_model_serving/preprocessing.py"
+            parameters:
+              - "--root_path"
+              - ${var.root_path}
+        - task_key: if
+          condition_task:
+            op: "EQUAL_TO"
+            left: "{{tasks.preprocessing.values.refreshed}}"
+            right: "1"
+          depends_on: 
+            - task_key: "preprocessing"
+        - task_key: "train_model"
+          depends_on: 
+            - task_key: "if"
+              outcome: "true"
+          job_cluster_key: "hotel-cancellation-cluster"
+          spark_python_task:
+            python_file: "fe_model_serving/train_model.py"
+            parameters:
+              - "--root_path"
+              - ${var.root_path}
+              - "--git_sha"
+              - ${var.git_sha}
+          libraries: 
+            - pypi: 
+                package: "lightgbm==4.5.0"
+            - pypi: 
+                package: "scikit-learn==1.5.2"
+            - pypi: 
+                package: "cloudpickle==3.1.0"
+            - pypi: 
+                package: "mlflow==2.17.0"
+            - pypi: 
+                package: "numpy==1.26.4"
+            - pypi: 
+                package: "pandas==2.2.3"
+            - pypi: 
+                package: "pyarrow==14.0.1"
+            - pypi: 
+                package: "cffi==1.17.1"
+            - pypi: 
+                package: "scipy==1.14.1"
+            - pypi: 
+                package: "matplotlib==3.9.2"
+            - pypi: 
+                package: "databricks-feature-engineering==0.6"
+            - pypi: 
+                package: "databricks-feature-lookup==1.2.0"
+            - pypi: 
+                package: "databricks-sdk==0.32.0"
+        - task_key: "deploy_model"
+          depends_on: 
+            - task_key: "train_model"
+          job_cluster_key: "hotel-cancellation-cluster"
+          spark_python_task:
+            python_file: "fe_model_serving/deploy_model.py"
+            parameters:
+              - "--root_path"
+              - ${var.root_path}
+          libraries: 
+            - pypi: 
+                package: "databricks-sdk==0.32.0"
+    model-monitoring:
+      name: hotel-cancellation-monitoring
+      schedule:
+        quartz_cron_expression: "0 0 6 ? * TUE"
+        timezone_id: "Europe/Amsterdam"
+        pause_status: ${var.schedule_pause_status}
+      tags:
+        project_name: "hotel-cancellation"
+      job_clusters:
+        - job_cluster_key: "hotel-cancellation-monitoring-cluster"
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            data_security_mode: "SINGLE_USER"
+            node_type_id: "r5.xlarge"
+            driver_node_type_id: "r5.xlarge"
+            aws_attributes:
+              ebs_volume_count: 1                         # Number of EBS volumes
+              ebs_volume_size: 100                        # Size in GiB
+              ebs_volume_type: "GENERAL_PURPOSE_SSD"      # General Purpose SSD
+            autoscale:
+              min_workers: 1
+              max_workers: 1
+      tasks:
+        - task_key: "refresh-monitor"
+          job_cluster_key: "hotel-cancellation-monitoring-cluster"
+          spark_python_task:
+            python_file: "fe_model_serving/refresh_monitor.py"
+            parameters:
+              - "--root_path"
+              - ${var.root_path}
+
+
+targets:
+  dev:
+    workspace:
+      host: https://dbc-2793f612-97a3.cloud.databricks.com
+      root_path: ${var.root_path}
+    variables: 
+      schedule_pause_status: PAUSED

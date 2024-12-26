@@ -1,0 +1,15 @@
+{
+    "_experiment_id": "3056181829817875",
+    "_name": "/Shared/hotel-cancellations-basic",
+    "_artifact_location": "dbfs:/databricks/mlflow-tracking/3056181829817875",
+    "_lifecycle_stage": "active",
+    "_tags": {
+        "mlflow.experiment.sourceName": "/Shared/hotel-cancellations-basic",
+        "mlflow.ownerId": "1778892744852702",
+        "mlflow.ownerEmail": "asmartishin@gmail.com",
+        "mlflow.experimentType": "MLFLOW_EXPERIMENT",
+        "repository_name": "hotel-cancellations"
+    },
+    "_creation_time": 1735152522992,
+    "_last_update_time": 1735152522992
+}

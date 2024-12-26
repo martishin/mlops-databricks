@@ -1,0 +1,11 @@
+uv venv -p 3.11
+source .venv/bin/activate
+uv pip install -r pyproject.toml --all-extras
+uv lock
+uv pip install -r requirements.in
+
+pip install pip-tools
+pip-compile --output-file pyproject.toml
+
+databricks bundle validate
+databricks bundle deploy
